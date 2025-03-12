@@ -1,0 +1,63 @@
+/// [Terraform document link](https://developer.hashicorp.com/terraform/language/terraform#terraform)
+module terrapkl.core.Terraform
+
+// Required Properties
+/// Specifies which version of the Terraform CLI is allowed to run the configuration.
+/// Refer to [Version constraints](https://developer.hashicorp.com/terraform/language/expressions/version-constraints) for details about the supported syntax for specifying version constraints.
+required_version: String?
+
+/// Specifies all provider plugins required to create and manage resources specified in the configuration.
+required_providers: Mapping<String, RequiredProvider>
+
+// Optional Properties
+/// Specifies a mechanism for storing Terraform state files.
+/// The backend block takes a backend type as an argument. Refer to [Backend Configuration](https://developer.hashicorp.com/terraform/language/backend) for details about configuring the backend block.
+backend: (Local|Remote|S3)?
+
+// Classes
+class RequiredProvider {
+  source: String
+  version: String
+}
+
+/// The local backend stores state on the local filesystem, locks that state using system APIs, and performs operations locally.
+class Local {
+  hidden path: String
+
+  `local` {
+    ["path"] = path
+  }
+}
+
+/// The remote backend is unique among all other Terraform backends because it can both store state snapshots and execute operations for HCP Terraform's CLI-driven run workflow.
+class Remote {
+  hidden hostname: String
+
+  hidden organization: String
+
+  remote {
+    ["hostname"] = hostname
+    ["organization"] = organization
+  }
+}
+
+/// Stores the state as a given key in a given bucket on Amazon S3.
+/// This backend also supports state locking and consistency checking via Dynamo DB, which can be enabled by setting the dynamodb_table field to an existing DynamoDB table name.
+/// A single DynamoDB table can be used to lock multiple remote state files.
+/// Terraform generates key names that include the values of the bucket and key variables.
+class S3 {
+  hidden bucket: String
+
+  hidden key: String
+
+  hidden region: String
+
+  hidden dynamodb_table: String?
+
+  s3 {
+    ["bucket"] = bucket
+    ["key"] = key
+    ["region"] = region
+    ["dynamodb_table"] = dynamodb_table
+  }
+}

@@ -1,0 +1,13 @@
+amends "pkl:Project"
+
+package {
+  name = "terrapkl-core"
+  baseUri = "package://pkg.pkl-lang.org/github.com/KouYuume/terrapkl-core/terrapkl-core"
+  version = "0.0.1"
+  packageZipUrl = "https://github.com/KouYuume/terrapkl-core/releases/download/\(name)@\(version)/\(name)@\(version).zip"
+  sourceCode = "https://github.com/KouYuume/terrapkl-core"
+  sourceCodeUrlScheme = "\(sourceCode)/blob/\(name)@\(version)%{path}#L%{line}-L%{endLine}"
+  authors {
+    "The Pkl Authors <yuumekou0109@outlook.com>"
+  }
+}

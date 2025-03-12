@@ -1,0 +1,23 @@
+abstract module terrapkl.core.Resouce
+
+// Must Override Properties
+/// Terraform type name
+hidden fixed tfType: String
+
+/// Resource name.
+/// This must match the regular expression: `^[a-z0-9_]+$`
+hidden tfName: String(
+    this.matches(
+      Regex(#"^[a-z0-9_]+$"#)
+    )
+)
+
+/// Resource path
+hidden fixed instanse: String = "\(tfType).\(tfName)"
+
+/// [Terraform document link](https://developer.hashicorp.com/terraform/language/meta-arguments/depends_on)
+depends_on: Listing<String>?
+
+// Functions
+/// Load value of the property.
+function lazyLoad(prop: String): String = "${\(tfType).\(tfName).\(prop)}"

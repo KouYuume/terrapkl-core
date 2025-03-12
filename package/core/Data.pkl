@@ -1,0 +1,17 @@
+abstract module terrapkl.core.Data
+
+// Must Override Properties
+/// Terraform type name
+hidden fixed tfType: String
+
+/// Data name.
+/// This must match the regular expression: `^[a-z0-9_]+$`
+hidden tfName: String(
+    this.matches(
+      Regex(#"^[a-z0-9_]+$"#)
+    )
+  )
+
+// Functions
+/// Load value of the property.
+function lazyLoad(prop: String): String = "${data.\(tfType).\(tfName).\(prop)}"
